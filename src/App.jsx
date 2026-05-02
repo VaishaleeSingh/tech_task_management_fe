@@ -11,11 +11,12 @@ import ProjectDetail from './pages/ProjectDetail';
 import MyTasks from './pages/MyTasks';
 import Users from './pages/Users';
 
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function ProtectedLayout() {
   const { user, loading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [collapsed, setCollapsed] = React.useState(false);
 
   if (loading) return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}><div className="spinner" /></div>;
   if (!user) return <Navigate to="/login" replace />;
@@ -32,14 +33,24 @@ function ProtectedLayout() {
         </button>
       </div>
 
-      {/* Sidebar with mobile toggle class */}
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} onClick={() => setSidebarOpen(false)}>
-        <Sidebar />
+      {/* Sidebar with mobile toggle and manual collapse classes */}
+      <div className={`sidebar ${sidebarOpen ? 'open' : ''} ${collapsed ? 'collapsed' : ''}`}>
+        <button 
+          className="btn-ghost" 
+          onClick={() => setCollapsed(!collapsed)}
+          style={{ position: 'absolute', top: 20, right: 10, padding: 4, borderRadius: 6, z-index: 1100 }}
+        >
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+        <Sidebar collapsed={collapsed} />
       </div>
 
-      <main className="main-content">
+      <main className="main-content" style={{ marginLeft: 0 }}>
         <Outlet />
       </main>
+
+      {/* Mobile Overlay */}
+      {sidebarOpen && <div className="mobile-overlay" onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 850 }} />}
     </div>
   );
 }
