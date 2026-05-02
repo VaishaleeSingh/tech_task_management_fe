@@ -34,20 +34,16 @@ function ProtectedLayout() {
       </div>
 
       {/* Sidebar with Tailwind Responsive Classes */}
-      <div className={`fixed inset-y-0 left-0 z-[50] w-64 bg-[#1e293b] border-r border-white/10 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} ${collapsed ? 'md:w-20' : 'md:w-64'}`}>
-        <button 
-          className="hidden md:flex absolute top-5 -right-3 bg-[#6366f1] text-white p-1 rounded-full shadow-xl hover:scale-110 transition-transform z-[60]" 
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-        </button>
-        <div onClick={() => window.innerWidth < 768 && setSidebarOpen(false)} className="h-full">
-          <Sidebar collapsed={collapsed} />
+      <div className={`fixed inset-y-0 left-0 z-[50] bg-[#1e293b] border-r border-white/10 transform transition-all duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} ${collapsed ? 'w-20' : 'w-[280px]'}`}>
+        <div onClick={() => window.innerWidth < 768 && setSidebarOpen(false)} className="h-full overflow-hidden">
+          <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
         </div>
       </div>
 
-      <main className="flex-1 p-6 md:p-10 pt-24 md:pt-10 max-w-[1400px] mx-auto w-full transition-all duration-300">
-        <Outlet />
+      <main className="flex-1 flex flex-col min-h-0 w-full overflow-x-hidden pt-20 md:pt-12">
+        <div className="main-content">
+          <Outlet />
+        </div>
       </main>
 
       {/* Mobile Overlay */}

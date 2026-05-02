@@ -146,38 +146,42 @@ export default function Projects() {
           {!search && <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setShowModal(true)}><Plus size={16} /> Create Project</button>}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="projects-grid">
           {filtered.map(p => {
             const pct = p.taskCount > 0 ? Math.round((p.completedTasks / p.taskCount) * 100) : 0;
             return (
-              <div key={p.id} className="card card-hover" style={{ cursor: 'pointer' }} onClick={() => navigate(`/projects/${p.id}`)}>
-                <div style={{ height: 4, background: p.color, borderRadius: '12px 12px 0 0' }} />
+              <div 
+                key={p.id} 
+                className="card card-hover flex flex-col justify-between" 
+                style={{ cursor: 'pointer', borderTop: `4px solid ${p.color}` }} 
+                onClick={() => navigate(`/projects/${p.id}`)}
+              >
                 <div className="card-body">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-                    <h3 style={{ fontWeight: 700, fontSize: 16 }}>{p.name}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+                    <h3 style={{ fontWeight: 800, fontSize: 18 }}>{p.name}</h3>
                     <span className={`badge badge-${p.status}`}>{statusLabels[p.status]}</span>
                   </div>
-                  {p.description && <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, lineHeight: 1.5 }}>{p.description.slice(0, 80)}{p.description.length > 80 ? '…' : ''}</p>}
-                  <div style={{ marginBottom: 16 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-muted)', marginBottom: 6 }}>
+                  {p.description && <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 20, lineHeight: 1.6 }}>{p.description.slice(0, 80)}{p.description.length > 80 ? '…' : ''}</p>}
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600 }}>
                       <span>{p.completedTasks}/{p.taskCount} tasks</span><span>{pct}%</span>
                     </div>
                     <div className="progress-bar">
                       <div className="progress-fill" style={{ width: `${pct}%`, background: p.color }} />
                     </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: 'var(--text-muted)' }}>
-                    <span>👥 {p.memberCount} members</span>
-                    {p.dueDate && <span>📅 {format(new Date(p.dueDate), 'MMM d')}</span>}
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      {(user?.role === 'admin' || p.ownerId === user?.id) && (
-                        <>
-                          <button className="btn btn-ghost btn-sm" onClick={e => { e.stopPropagation(); setEditProject(p); setShowModal(true); }}>Edit</button>
-                          <button className="btn btn-danger btn-sm" onClick={e => handleDelete(p.id, e)}>Del</button>
-                        </>
-                      )}
-                    </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, color: 'var(--text-muted)' }}>
+                    <span style={{ fontWeight: 600 }}>👥 {p.memberCount} members</span>
+                    {p.dueDate && <span style={{ fontWeight: 600 }}>📅 {format(new Date(p.dueDate), 'MMM d')}</span>}
                   </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+                  {(user?.role === 'admin' || p.ownerId === user?.id) && (
+                    <>
+                      <button className="btn btn-ghost btn-sm" onClick={e => { e.stopPropagation(); setEditProject(p); setShowModal(true); }}>Edit</button>
+                      <button className="btn btn-danger btn-sm" onClick={e => handleDelete(p.id, e)}>Delete</button>
+                    </>
+                  )}
                 </div>
               </div>
             );

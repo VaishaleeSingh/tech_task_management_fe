@@ -1,19 +1,19 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, FolderKanban, CheckSquare, Users, LogOut, Zap } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, CheckSquare, Users, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 export const Avatar = ({ name, color, size = 'md' }) => {
   const initials = name?.split(' ').map(n => n[0]).join('').toUpperCase() || '?';
-  const sizeClass = size === 'sm' ? 'avatar-sm' : size === 'lg' ? 'avatar-lg' : '';
+  const sizeClass = size === 'sm' ? 'w-8 h-8 text-xs' : size === 'lg' ? 'w-14 h-14 text-xl' : 'w-10 h-10 text-sm';
   return (
-    <div className={`avatar ${sizeClass}`} style={{ background: color || 'var(--accent)' }}>
+    <div className={`rounded-full flex items-center justify-center font-bold text-white shrink-0 shadow-sm ${sizeClass}`} style={{ background: color || 'var(--accent)' }}>
       {initials}
     </div>
   );
 };
 
-export default function Sidebar({ collapsed }) {
+export default function Sidebar({ collapsed, setCollapsed }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -28,58 +28,71 @@ export default function Sidebar({ collapsed }) {
   }
 
   return (
-    <div className="flex flex-grow flex-col p-4 h-full relative">
-      <div className={`flex items-center gap-3 mb-10 px-2 transition-all duration-300 ${collapsed ? 'justify-center' : ''}`}>
-        <div className="text-2xl text-[#6366f1] shrink-0">⚡</div>
-        {!collapsed && (
-          <div className="flex flex-col">
-            <span className="font-extrabold text-lg tracking-tight leading-none text-white">TaskFlow</span>
-            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">Team Manager</span>
-          </div>
-        )}
+    <div className="flex flex-grow flex-col p-5 h-full relative bg-[#1e293b]">
+      {/* Header & Toggle */}
+      <div className={`flex items-center justify-between mb-10 transition-all duration-300 ${collapsed ? 'flex-col gap-4' : 'px-2'}`}>
+        <div className="flex items-center gap-3 cursor-pointer h-10" onClick={() => navigate('/dashboard')}>
+          <div className="text-3xl text-[#6366f1] shrink-0 drop-shadow-md flex items-center h-full">⚡</div>
+          {!collapsed && (
+            <span className="font-extrabold text-2xl tracking-tight text-white flex items-center h-full">TaskFlow</span>
+          )}
+        </div>
+        <button 
+          onClick={() => setCollapsed(!collapsed)}
+          className="hidden md:flex p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+        >
+          {collapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
+        </button>
       </div>
 
-      <nav className="flex-1 flex flex-col gap-1">
-        {!collapsed && (
-          <span className="text-[11px] text-slate-500 font-extrabold uppercase tracking-widest mb-2 px-2">Navigation</span>
-        )}
+      {/* Navigation */}
+      <nav className="sb-nav">
         {navItems.map(item => (
           <NavLink 
             key={item.to} 
             to={item.to} 
-            className={({ isActive }) => `flex items-center gap-3 p-3 rounded-lg transition-all whitespace-nowrap overflow-hidden ${isActive ? 'bg-[#6366f1] text-white shadow-lg' : 'text-slate-400 hover:bg-white/5 hover:text-white'} ${collapsed ? 'justify-center px-0' : ''}`}
+            className={({ isActive }) => `sb-link ${isActive ? 'active' : ''} ${collapsed ? 'justify-center px-0 py-3' : ''}`}
           >
-            <item.icon size={20} className="shrink-0" />
-            {!collapsed && <span className="font-medium">{item.label}</span>}
+            <item.icon size={collapsed ? 24 : 22} className={`shrink-0 transition-transform duration-300 group-hover:scale-110 ${!collapsed && 'opacity-80'}`} />
+            {!collapsed && <span className="font-bold tracking-wide">{item.label}</span>}
           </NavLink>
         ))}
       </nav>
 
-      <div className="mt-auto pt-4 border-t border-white/10">
-        <div className={`flex items-center gap-3 p-2 rounded-xl transition-all ${collapsed ? 'justify-center px-0' : ''}`}>
-          <Avatar name={user?.name} color={user?.avatarColor} size={collapsed ? 'sm' : 'md'} />
-          {!collapsed && (
-            <div className="flex-1 min-w-0">
-              <div className="font-bold text-sm text-white truncate">{user?.name}</div>
-              <div className="text-[11px] text-slate-500 capitalize">{user?.role}</div>
+      {/* User Profile */}
+      <div className="sb-footer">
+        {collapsed ? (
+          <div className="flex flex-col items-center gap-4">
+            <Avatar name={user?.name} color={user?.avatarColor} size="sm" />
+            <button 
+              onClick={logout} 
+              className="p-3 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all shadow-sm"
+              title="Sign out"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
+        ) : (
+          <div className="sb-user-card">
+            {/* Row 1: Icon and Name */}
+            <div className="sb-user-row">
+              <Avatar name={user?.name} color={user?.avatarColor} size="md" />
+              <div className="font-extrabold text-sm text-white truncate w-full">{user?.name}</div>
             </div>
-          )}
-          <button 
-            onClick={logout} 
-            className={`p-2 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all ${collapsed ? 'hidden' : ''}`}
-            title="Sign out"
-          >
-            <LogOut size={18} />
-          </button>
-        </div>
-        {collapsed && (
-           <button 
-           onClick={logout} 
-           className="mt-2 w-full flex justify-center p-2 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
-           title="Sign out"
-         >
-           <LogOut size={18} />
-         </button>
+            {/* Row 2: Role */}
+            <div className="flex items-center mb-4 px-1">
+              <span className="sb-user-role">
+                {user?.role || 'Member'}
+              </span>
+            </div>
+            {/* Row 3: Logout */}
+            <button 
+              onClick={logout} 
+              className="sb-logout-btn"
+            >
+              <LogOut size={16} /> Sign Out
+            </button>
+          </div>
         )}
       </div>
     </div>
