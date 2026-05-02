@@ -352,38 +352,52 @@ export default function ProjectDetail() {
         </div>
       )}
 
-      {/* Kanban View */}
+      {/* Kanban View with Tailwind Responsiveness */}
       {view === 'kanban' && (
-        <div className="kanban-board">
+        <div className="flex gap-6 overflow-x-auto pb-6 -mx-4 px-4 scrollbar-hide flex-1 min-h-[500px]">
           {STATUSES.map(status => (
-            <div key={status} className="kanban-col">
-              <div className="kanban-col-header">
-                <span className="kanban-col-title" style={{ color: STATUS_COLORS[status] }}>{STATUS_LABELS[status]}</span>
-                <span className="kanban-col-count">{tasksByStatus[status].length}</span>
-              </div>
-              {tasksByStatus[status].map(task => (
-                <div key={task.id} className="task-card" onClick={() => fetchTaskDetail(task.id).then(() => {})}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: { urgent: '#ff6584', high: '#ff8c42', medium: '#6c63ff', low: '#43b97f' }[task.priority], borderRadius: '8px 8px 0 0' }} />
-                  <div className="task-card-title">{task.title}</div>
-                  {task.tags?.length > 0 && (
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 10 }}>
-                      {task.tags.slice(0, 2).map(t => <span key={t} className="tag">{t}</span>)}
-                    </div>
-                  )}
-                  <div className="task-card-meta">
-                    <span className={`badge badge-${task.priority}`}>{task.priority}</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      {task.commentCount > 0 && <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>💬{task.commentCount}</span>}
-                      {task.dueDate && <span style={{ fontSize: 11, color: isPast(parseISO(task.dueDate)) && task.status !== 'done' ? 'var(--danger)' : 'var(--text-muted)' }}>{format(new Date(task.dueDate), 'MMM d')}</span>}
-                      {task.assigneeAvatarColor && <Avatar name={task.assigneeName} color={task.assigneeAvatarColor} size="sm" />}
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 6, marginTop: 10 }} onClick={e => e.stopPropagation()}>
-                    <button className="btn btn-ghost btn-sm" style={{ fontSize: 11 }} onClick={() => { setEditTask(task); setShowTaskModal(true); }}>Edit</button>
-                    <button className="btn btn-danger btn-sm" style={{ fontSize: 11 }} onClick={() => handleDeleteTask(task.id)}>Del</button>
-                  </div>
+            <div key={status} className="flex-shrink-0 w-[300px] md:w-[320px] bg-black/20 rounded-2xl p-4 flex flex-col gap-4 border border-white/5 h-full">
+              <div className="flex items-center justify-between px-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: STATUS_COLORS[status] }} />
+                  <h3 className="text-sm font-bold text-slate-300 uppercase tracking-widest">{STATUS_LABELS[status]}</h3>
                 </div>
-              ))}
+                <span className="bg-white/5 text-slate-400 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                  {tasksByStatus[status].length}
+                </span>
+              </div>
+              
+              <div className="flex-1 flex flex-col gap-3 min-h-0 overflow-y-auto pr-1 scrollbar-thin">
+                {tasksByStatus[status].map(task => (
+                  <div 
+                    key={task.id} 
+                    onClick={() => fetchTaskDetail(task.id)}
+                    className="bg-[#1e293b] border border-white/5 rounded-xl p-4 hover:border-[#6366f1]/50 hover:shadow-xl cursor-pointer transition-all group active:scale-[0.98] relative"
+                  >
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: { urgent: '#ff6584', high: '#ff8c42', medium: '#6c63ff', low: '#43b97f' }[task.priority], borderRadius: '8px 8px 0 0' }} />
+                    <h4 className="font-bold text-sm text-slate-100 mb-2 mt-2 line-clamp-2 leading-tight group-hover:text-white transition-colors">
+                      {task.title}
+                    </h4>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="flex items-center gap-2">
+                        {task.assigneeAvatarColor && <Avatar name={task.assigneeName} color={task.assigneeAvatarColor} size="sm" />}
+                        {task.dueDate && (
+                          <div className={`flex items-center gap-1 text-[10px] font-bold ${isPast(parseISO(task.dueDate)) && task.status !== 'done' ? 'text-red-400' : 'text-slate-500'}`}>
+                            <Clock size={12} />
+                            {format(new Date(task.dueDate), 'MMM d')}
+                          </div>
+                        )}
+                      </div>
+                      <button 
+                        className="opacity-0 group-hover:opacity-100 p-1 text-red-400 hover:bg-red-400/10 rounded transition-all"
+                        onClick={(e) => { e.stopPropagation(); handleDeleteTask(task.id); }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

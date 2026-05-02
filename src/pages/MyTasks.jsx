@@ -41,18 +41,18 @@ export default function MyTasks() {
   if (loading) return <div className="loading-center"><div className="spinner" /></div>;
 
   return (
-    <div className="page">
-      <div className="page-header">
+    <div className="page flex flex-col gap-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="page-title">My Tasks</h1>
-          <p className="page-subtitle">{allTasks.length} tasks assigned to or created by you</p>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-white">My Tasks</h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">{allTasks.length} tasks assigned to or created by you</p>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <select style={{ width: 140 }} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+        <div className="flex items-center gap-3">
+          <select className="flex-1 md:w-40 bg-[#1e293b] border border-white/10 rounded-lg p-2 text-sm text-slate-300" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
             <option value="">All Statuses</option>
             {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
-          <select style={{ width: 140 }} value={filterPriority} onChange={e => setFilterPriority(e.target.value)}>
+          <select className="flex-1 md:w-40 bg-[#1e293b] border border-white/10 rounded-lg p-2 text-sm text-slate-300" value={filterPriority} onChange={e => setFilterPriority(e.target.value)}>
             <option value="">All Priorities</option>
             {['urgent', 'high', 'medium', 'low'].map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
           </select>

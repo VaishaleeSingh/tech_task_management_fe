@@ -54,7 +54,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="stats-grid stagger-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 stagger-1">
         <StatCard value={stats.totalProjects} label="Projects" cls="purple" icon={<Layers size={24} />} />
         <StatCard value={stats.inProgressTasks} label="In Progress" cls="blue" icon={<Zap size={24} />} />
         <StatCard value={stats.doneTasks} label="Completed" cls="green" icon={<CheckCircle size={24} />} />
@@ -62,12 +62,12 @@ export default function Dashboard() {
       </div>
 
       {/* Dynamic Tabs Navigation */}
-      <div className="dashboard-tabs">
+      <div className="flex gap-2 mb-8 bg-black/20 p-1 rounded-lg w-fit max-w-full overflow-x-auto whitespace-nowrap">
         {tabs.map(tab => (
           <button 
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-sm transition-all ${activeTab === tab.id ? 'bg-slate-800 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}
           >
             <tab.icon size={18} />
             {tab.label}
@@ -79,7 +79,7 @@ export default function Dashboard() {
       <div className="tab-content stagger-3" style={{ animation: 'modal-in 0.3s ease' }}>
         
         {activeTab === 'overview' && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 20 }}>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             <div className="card">
               <div className="card-header">
                 <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Active Project Progress</h2>

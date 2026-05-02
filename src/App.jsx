@@ -22,37 +22,41 @@ function ProtectedLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="app-layout">
+    <div className="flex min-h-screen bg-[#0f172a] text-[#f8fafc]">
       {/* Mobile Header */}
-      <div className="mobile-header">
-        <div className="sidebar-logo" style={{ marginBottom: 0, padding: 0 }}>
-          <span style={{ fontSize: 18 }}>⚡ TaskFlow</span>
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#1e293b] border-b border-white/10 flex items-center justify-between px-6 z-[40]">
+        <div className="flex items-center gap-2">
+          <span className="text-xl font-extrabold text-[#6366f1]">⚡ TaskFlow</span>
         </div>
-        <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <button className="p-2 text-[#f8fafc]" onClick={() => setSidebarOpen(!sidebarOpen)}>
           {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Sidebar with mobile toggle and manual collapse classes */}
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''} ${collapsed ? 'collapsed' : ''}`}>
+      {/* Sidebar with Tailwind Responsive Classes */}
+      <div className={`fixed inset-y-0 left-0 z-[50] w-64 bg-[#1e293b] border-r border-white/10 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} ${collapsed ? 'md:w-20' : 'md:w-64'}`}>
         <button 
-          className="btn-ghost desktop-only" 
+          className="hidden md:flex absolute top-5 -right-3 bg-[#6366f1] text-white p-1 rounded-full shadow-xl hover:scale-110 transition-transform z-[60]" 
           onClick={() => setCollapsed(!collapsed)}
-          style={{ position: 'absolute', top: 20, right: 10, padding: 4, borderRadius: 6, zIndex: 1100 }}
         >
-          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
         </button>
-        <div onClick={() => setSidebarOpen(false)} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div onClick={() => window.innerWidth < 768 && setSidebarOpen(false)} className="h-full">
           <Sidebar collapsed={collapsed} />
         </div>
       </div>
 
-      <main className="main-content" style={{ marginLeft: 0 }}>
+      <main className="flex-1 p-6 md:p-10 pt-24 md:pt-10 max-w-[1400px] mx-auto w-full transition-all duration-300">
         <Outlet />
       </main>
 
       {/* Mobile Overlay */}
-      {sidebarOpen && <div className="mobile-overlay" onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 850 }} />}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[45] md:hidden" 
+          onClick={() => setSidebarOpen(false)} 
+        />
+      )}
     </div>
   );
 }
