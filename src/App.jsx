@@ -36,13 +36,15 @@ function ProtectedLayout() {
       {/* Sidebar with mobile toggle and manual collapse classes */}
       <div className={`sidebar ${sidebarOpen ? 'open' : ''} ${collapsed ? 'collapsed' : ''}`}>
         <button 
-          className="btn-ghost" 
+          className="btn-ghost desktop-only" 
           onClick={() => setCollapsed(!collapsed)}
           style={{ position: 'absolute', top: 20, right: 10, padding: 4, borderRadius: 6, zIndex: 1100 }}
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
-        <Sidebar collapsed={collapsed} />
+        <div onClick={() => setSidebarOpen(false)} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Sidebar collapsed={collapsed} />
+        </div>
       </div>
 
       <main className="main-content" style={{ marginLeft: 0 }}>

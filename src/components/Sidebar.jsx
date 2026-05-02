@@ -13,7 +13,7 @@ export const Avatar = ({ name, color, size = 'md' }) => {
   );
 };
 
-export default function Sidebar() {
+export default function Sidebar({ collapsed }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
