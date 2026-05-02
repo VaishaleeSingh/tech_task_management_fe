@@ -54,7 +54,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="stats-grid">
+      <div className="stats-grid stagger-1">
         <StatCard value={stats.totalProjects} label="Projects" cls="purple" icon={<Layers size={24} />} />
         <StatCard value={stats.inProgressTasks} label="In Progress" cls="blue" icon={<Zap size={24} />} />
         <StatCard value={stats.doneTasks} label="Completed" cls="green" icon={<CheckCircle size={24} />} />
@@ -62,7 +62,7 @@ export default function Dashboard() {
       </div>
 
       {/* Dynamic Tabs Navigation */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 24, borderBottom: '1px solid var(--border)', paddingBottom: 1 }}>
+      <div className="stagger-2" style={{ display: 'flex', gap: 8, marginBottom: 24, borderBottom: '1px solid var(--border)', paddingBottom: 1 }}>
         {tabs.map(tab => (
           <button 
             key={tab.id}
@@ -82,7 +82,7 @@ export default function Dashboard() {
       </div>
 
       {/* Tab Content */}
-      <div className="tab-content" style={{ animation: 'modal-in 0.3s ease' }}>
+      <div className="tab-content stagger-3" style={{ animation: 'modal-in 0.3s ease' }}>
         
         {activeTab === 'overview' && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 20 }}>
