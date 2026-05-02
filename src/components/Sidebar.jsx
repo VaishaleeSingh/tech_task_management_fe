@@ -61,10 +61,10 @@ export default function Sidebar() {
           <button 
             onClick={logout} 
             className="btn-ghost" 
-            style={{ padding: 6, minWidth: 'auto' }} 
+            style={{ padding: 10, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
             title="Sign out"
           >
-            <LogOut size={16} />
+            <LogOut size={18} />
           </button>
         </div>
       </div>
