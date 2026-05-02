@@ -11,14 +11,35 @@ import ProjectDetail from './pages/ProjectDetail';
 import MyTasks from './pages/MyTasks';
 import Users from './pages/Users';
 
+import { Menu, X } from 'lucide-react';
+
 function ProtectedLayout() {
   const { user, loading } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
   if (loading) return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}><div className="spinner" /></div>;
   if (!user) return <Navigate to="/login" replace />;
+
   return (
     <div className="app-layout">
-      <Sidebar />
-      <main className="main-content"><Outlet /></main>
+      {/* Mobile Header */}
+      <div className="mobile-header">
+        <div className="sidebar-logo" style={{ marginBottom: 0, padding: 0 }}>
+          <span style={{ fontSize: 18 }}>⚡ TaskFlow</span>
+        </div>
+        <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+          {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Sidebar with mobile toggle class */}
+      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} onClick={() => setSidebarOpen(false)}>
+        <Sidebar />
+      </div>
+
+      <main className="main-content">
+        <Outlet />
+      </main>
     </div>
   );
 }

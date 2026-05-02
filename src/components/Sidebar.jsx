@@ -28,7 +28,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="sidebar">
+    <>
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">⚡</div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -68,6 +68,6 @@ export default function Sidebar() {
           </button>
         </div>
       </div>
-    </aside>
+    </>
   );
 }
