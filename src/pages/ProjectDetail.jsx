@@ -11,7 +11,7 @@ const STATUSES = ['todo', 'in_progress', 'in_review', 'done'];
 const STATUS_LABELS = { todo: 'To Do', in_progress: 'In Progress', in_review: 'In Review', done: 'Done' };
 const STATUS_COLORS = { todo: 'var(--text-muted)', in_progress: '#3b82f6', in_review: '#ff8c42', done: '#43b97f' };
 
-function TaskModal({ task, projectId, projectMembers, onClose, onSaved }) {
+function TaskModal({ task, projectId, onClose, onSaved }) {
   const [form, setForm] = useState({
     title: task?.title || '',
     description: task?.description || '',
@@ -22,7 +22,12 @@ function TaskModal({ task, projectId, projectMembers, onClose, onSaved }) {
     estimatedHours: task?.estimatedHours || '',
     tags: task?.tags?.join(', ') || '',
   });
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    api.get('/api/auth/users').then(res => setUsers(res.data)).catch(() => toast.error('Failed to load users'));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +89,7 @@ function TaskModal({ task, projectId, projectMembers, onClose, onSaved }) {
                 <label className="form-label">Assign To</label>
                 <select value={form.assigneeId} onChange={e => setForm(p => ({ ...p, assigneeId: e.target.value }))}>
                   <option value="">Unassigned</option>
-                  {projectMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+                  {users.map(u => <option key={u.id} value={u.id}>{u.name} ({u.role})</option>)}
                 </select>
               </div>
               <div className="form-group">
@@ -414,7 +419,7 @@ export default function ProjectDetail() {
       )}
 
       {showTaskModal && (
-        <TaskModal task={editTask} projectId={projectId} projectMembers={project.members || []}
+        <TaskModal task={editTask} projectId={projectId}
           onClose={() => { setShowTaskModal(false); setEditTask(null); }} onSaved={fetchAll} />
       )}
       {viewTask && (
