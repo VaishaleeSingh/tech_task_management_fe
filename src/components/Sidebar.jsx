@@ -49,13 +49,22 @@ export default function Sidebar() {
 
       <div className="sidebar-footer">
         <div className="user-profile">
-          <Avatar name={user?.name} color={user?.avatarColor} />
-          <div style={{ flex: 1, overflow: 'hidden' }}>
-            <div style={{ fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', textTransform: 'capitalize' }}>{user?.role}</div>
+          <Avatar name={user?.name} color={user?.avatarColor} size="sm" />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontWeight: 700, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {user?.name}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'capitalize' }}>
+              {user?.role}
+            </div>
           </div>
-          <button onClick={logout} className="btn-ghost" style={{ padding: 8, borderRadius: 8 }}>
-            <LogOut size={18} />
+          <button 
+            onClick={logout} 
+            className="btn-ghost" 
+            style={{ padding: 6, minWidth: 'auto' }} 
+            title="Sign out"
+          >
+            <LogOut size={16} />
           </button>
         </div>
       </div>
