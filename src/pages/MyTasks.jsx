@@ -18,22 +18,21 @@ export default function MyTasks() {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const pRes = await api.get('/api/projects');
-      setProjects(pRes.data);
-      const tasksByProject = await Promise.all(
-        pRes.data.map(p => api.get(`/api/projects/${p.id}/tasks`).then(r => r.data.map(t => ({ ...t, projectName: p.name, projectColor: p.color }))))
-      );
-      const all = tasksByProject.flat().filter(t => t.assigneeId === user?.id || t.createdBy === user?.id);
-      setAllTasks(all);
-      setLoading(false);
+      try {
+        const res = await api.get('/api/my-tasks', {
+          params: { status: filterStatus, priority: filterPriority }
+        });
+        setAllTasks(res.data);
+      } catch (err) {
+        console.error('Failed to load my tasks');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchAll();
-  }, [user?.id]);
+  }, [user?.id, filterStatus, filterPriority]);
 
-  const filtered = allTasks.filter(t =>
-    (!filterStatus || t.status === filterStatus) &&
-    (!filterPriority || t.priority === filterPriority)
-  );
+  const filtered = allTasks;
 
   const grouped = ['todo', 'in_progress', 'in_review', 'done'].reduce((acc, s) => ({
     ...acc, [s]: filtered.filter(t => t.status === s)
