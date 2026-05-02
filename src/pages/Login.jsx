@@ -50,11 +50,6 @@ export default function Login() {
         <p style={{ textAlign: 'center', fontSize: 14, color: 'var(--text-secondary)' }}>
           Don't have an account? <Link className="auth-link" to="/signup">Create one</Link>
         </p>
-        <div style={{ marginTop: 24, padding: 16, background: 'var(--bg-hover)', borderRadius: 'var(--radius-sm)', fontSize: 12, color: 'var(--text-muted)' }}>
-          <strong style={{ color: 'var(--text-secondary)' }}>Demo credentials:</strong><br />
-          Admin: admin@demo.com / demo1234<br />
-          Member: member@demo.com / demo1234
-        </div>
       </div>
     </div>
   );
