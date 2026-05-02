@@ -38,7 +38,7 @@ function ProtectedLayout() {
         <button 
           className="btn-ghost" 
           onClick={() => setCollapsed(!collapsed)}
-          style={{ position: 'absolute', top: 20, right: 10, padding: 4, borderRadius: 6, z-index: 1100 }}
+          style={{ position: 'absolute', top: 20, right: 10, padding: 4, borderRadius: 6, zIndex: 1100 }}
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
