@@ -31,16 +31,26 @@ export default function Login() {
           <div className="auth-title">TaskFlow</div>
           <div className="auth-subtitle">Sign in to your workspace</div>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div className="form-group">
-            <label className="form-label">Email Address</label>
-            <input type="email" placeholder="you@company.com" value={form.email}
-              onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required />
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="you@company.com"
+              value={form.email}
+              onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+              required
+            />
           </div>
           <div className="form-group">
-            <label className="form-label">Password</label>
-            <input type="password" placeholder="Your password" value={form.password}
-              onChange={e => setForm(p => ({ ...p, password: e.target.value }))} required />
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Your password"
+              value={form.password}
+              onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
+              required
+            />
           </div>
           <button className="btn btn-primary" style={{ width: '100%', marginTop: 8 }} disabled={loading}>
             {loading ? 'Signing in...' : 'Sign In'}
