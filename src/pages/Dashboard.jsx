@@ -62,20 +62,14 @@ export default function Dashboard() {
       </div>
 
       {/* Dynamic Tabs Navigation */}
-      <div className="stagger-2" style={{ display: 'flex', gap: 8, marginBottom: 24, borderBottom: '1px solid var(--border)', paddingBottom: 1 }}>
+      <div className="tab-nav stagger-2">
         {tabs.map(tab => (
           <button 
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`btn ${activeTab === tab.id ? 'btn-primary' : 'btn-ghost'}`}
-            style={{ 
-              borderRadius: 'var(--radius-sm) var(--radius-sm) 0 0',
-              borderBottom: activeTab === tab.id ? '2px solid var(--accent)' : '2px solid transparent',
-              background: activeTab === tab.id ? 'var(--accent-glow)' : 'transparent',
-              padding: '12px 20px'
-            }}
+            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
           >
-            <tab.icon size={16} style={{ marginRight: 8 }} />
+            <tab.icon size={18} />
             {tab.label}
           </button>
         ))}

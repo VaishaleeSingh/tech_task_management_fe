@@ -1,14 +1,13 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import {
-  LayoutDashboard, FolderKanban, CheckSquare, Users, LogOut, Settings
-} from 'lucide-react';
+import { LayoutDashboard, FolderKanban, CheckSquare, Users, LogOut, Zap } from 'lucide-react';
 
-const Avatar = ({ name, color, size = 'sm' }) => {
-  const initials = name ? name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() : '?';
+export const Avatar = ({ name, color, size = 'md' }) => {
+  const initials = name?.split(' ').map(n => n[0]).join('').toUpperCase() || '?';
+  const sizeClass = size === 'sm' ? 'avatar-sm' : size === 'lg' ? 'avatar-lg' : '';
   return (
-    <div className={`avatar avatar-${size}`} style={{ background: color || '#6C63FF' }}>
+    <div className={`avatar ${sizeClass}`} style={{ background: color || 'var(--accent)' }}>
       {initials}
     </div>
   );
@@ -18,46 +17,48 @@ export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => { logout(); navigate('/login'); };
-
   const navItems = [
-    { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/projects', icon: FolderKanban, label: 'Projects' },
-    { to: '/my-tasks', icon: CheckSquare, label: 'My Tasks' },
-    ...(user?.role === 'admin' ? [{ to: '/users', icon: Users, label: 'Users' }] : []),
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/projects', label: 'Projects', icon: FolderKanban },
+    { to: '/my-tasks', label: 'My Tasks', icon: CheckSquare },
   ];
+
+  if (user?.role === 'admin') {
+    navItems.push({ to: '/users', label: 'Users', icon: Users });
+  }
 
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">⚡</div>
-        <div>
-          <div className="sidebar-logo-text">TaskFlow</div>
-          <div className="sidebar-logo-sub">Team Task Manager</div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px' }}>TaskFlow</span>
+          <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Team Manager</span>
         </div>
       </div>
 
       <nav className="sidebar-nav">
-        <div className="sidebar-section-label">Navigation</div>
-        {navItems.map(({ to, icon: Icon, label }) => (
-          <NavLink key={to} to={to} className={({ isActive }) => `sidebar-nav-item${isActive ? ' active' : ''}`}>
-            <Icon size={18} /> {label}
+        <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8, padding: '0 16px' }}>Navigation</span>
+        {navItems.map(item => (
+          <NavLink key={item.to} to={item.to} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <item.icon size={18} />
+            <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
 
-      <div className="sidebar-user">
-        <Avatar name={user?.name} color={user?.avatarColor} size="md" />
-        <div className="sidebar-user-info">
-          <div className="sidebar-user-name">{user?.name}</div>
-          <span className="sidebar-user-role">{user?.role}</span>
+      <div className="sidebar-footer">
+        <div className="user-profile">
+          <Avatar name={user?.name} color={user?.avatarColor} />
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <div style={{ fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name}</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', textTransform: 'capitalize' }}>{user?.role}</div>
+          </div>
+          <button onClick={logout} className="btn-ghost" style={{ padding: 8, borderRadius: 8 }}>
+            <LogOut size={18} />
+          </button>
         </div>
-        <button className="logout-btn" onClick={handleLogout} title="Sign out">
-          <LogOut size={16} />
-        </button>
       </div>
     </aside>
   );
 }
-
-export { Avatar };
