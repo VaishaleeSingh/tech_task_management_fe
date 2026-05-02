@@ -2,16 +2,16 @@
 
 TaskFlow is a professional, full-stack task management application built for high-performance teams. It features a modern dark-themed interface, real-time analytics, and role-based access control.
 
-## 🚀 Live Links
+## ???? Live Links
 - **Frontend (Vercel):** [https://tech-task-management-fe.vercel.app/](https://tech-task-management-fe.vercel.app/)
 - **Backend (Render):** [https://tech-task-management-be.onrender.com](https://tech-task-management-be.onrender.com)
 
-## 🛠️ Technology Stack
+## ??????? Technology Stack
 - **Frontend:** React 18, Vite, Lucide React, Axios, React Router 6.
 - **Backend:** Node.js, Express, MongoDB (Mongoose), JWT, BcryptJS.
 - **Deployment:** Vercel (Frontend), Render (Backend), MongoDB Atlas (Database).
 
-## ✨ Key Features
+## ??? Key Features
 - **Modern Dashboard:** High-fidelity Slate & Indigo design with dynamic tabs (Overview, Tasks, Activity).
 - **Project Management:** Create and manage projects with real-time progress tracking.
 - **Kanban Board:** Interactive task management with drag-and-drop logic.
@@ -19,15 +19,15 @@ TaskFlow is a professional, full-stack task management application built for hig
 - **Role-Based Access:** Administrative controls for user management and project ownership.
 - **SPA Routing:** Configured for seamless page refreshes on production deployments.
 
-## 📦 Repositories
+## ???? Repositories
 - **Frontend Repo:** [https://github.com/VaishaleeSingh/tech_task_management_fe](https://github.com/VaishaleeSingh/tech_task_management_fe)
 - **Backend Repo:** [https://github.com/VaishaleeSingh/tech_task_management_be](https://github.com/VaishaleeSingh/tech_task_management_be)
 
-## ⚙️ Local Setup
+## ?????? Local Setup
 1. Clone the repositories.
 2. Install dependencies using `npm install`.
 3. Set up `.env` files (refer to `.env.example`).
 4. Run `npm run dev` to start the development servers.
 
 ---
-© 2024 TaskFlow - Built with passion by Vaishalee Singh.
+?? 2024 TaskFlow - Built with passion by Vaishalee Singh.
