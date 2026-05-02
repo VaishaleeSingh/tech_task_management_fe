@@ -62,12 +62,12 @@ export default function Dashboard() {
       </div>
 
       {/* Dynamic Tabs Navigation */}
-      <div className="tab-nav stagger-2">
+      <div className="dashboard-tabs">
         {tabs.map(tab => (
           <button 
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
           >
             <tab.icon size={18} />
             {tab.label}
