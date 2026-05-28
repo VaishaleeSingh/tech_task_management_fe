@@ -22,20 +22,20 @@ function ProtectedLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex min-h-screen bg-[#0f172a] text-[#f8fafc]">
+    <div className="flex min-h-screen bg-[var(--bg-dark)] text-[var(--text-primary)]">
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#1e293b] border-b border-white/10 flex items-center justify-between px-6 z-[40]">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[var(--bg-card)] border-b border-[var(--border)] flex items-center justify-between px-6 z-[40]">
         <div className="flex items-center gap-2">
-          <span className="text-xl font-extrabold text-[#6366f1]">⚡ TaskFlow</span>
+          <span className="text-xl font-extrabold text-[var(--accent)]">⚡ TaskFlow</span>
         </div>
-        <button className="p-2 text-[#f8fafc]" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <button className="p-2 text-[var(--text-primary)]" onClick={() => setSidebarOpen(!sidebarOpen)}>
           {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Sidebar with Tailwind Responsive Classes */}
-      <div className={`fixed inset-y-0 left-0 z-[50] bg-[#1e293b] border-r border-white/10 transform transition-all duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} ${collapsed ? 'w-20' : 'w-[280px]'}`}>
-        <div onClick={() => window.innerWidth < 768 && setSidebarOpen(false)} className="h-full overflow-hidden">
+      <div className={`fixed inset-y-0 left-0 z-[50] bg-[var(--bg-card)] border-r border-[var(--border)] transform transition-all duration-300 ease-in-out md:translate-x-0 md:sticky md:top-0 md:h-screen md:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} ${collapsed ? 'w-20' : 'w-[280px]'}`}>
+        <div onClick={() => window.innerWidth < 768 && setSidebarOpen(false)} className="h-full overflow-y-auto overflow-x-hidden scrollbar-hide">
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
         </div>
       </div>

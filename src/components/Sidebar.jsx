@@ -18,23 +18,17 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   const navigate = useNavigate();
 
   const navItems = [
-    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/projects', label: 'Projects', icon: FolderKanban },
-    { to: '/my-tasks', label: 'My Tasks', icon: CheckSquare },
+    { to: '/dashboard', label: 'My Board', icon: LayoutDashboard },
   ];
 
-  if (user?.role === 'admin') {
-    navItems.push({ to: '/users', label: 'Users', icon: Users });
-  }
-
   return (
-    <div className="flex flex-grow flex-col p-5 h-full relative bg-[#1e293b]">
+    <div className="flex flex-grow flex-col p-5 h-full relative bg-[var(--bg-card)]">
       {/* Header & Toggle */}
       <div className={`flex items-center justify-between mb-10 transition-all duration-300 ${collapsed ? 'flex-col gap-4' : 'px-2'}`}>
         <div className="flex items-center gap-3 cursor-pointer h-10" onClick={() => navigate('/dashboard')}>
           <div className="text-3xl text-[#6366f1] shrink-0 drop-shadow-md flex items-center h-full">⚡</div>
           {!collapsed && (
-            <span className="font-extrabold text-2xl tracking-tight text-white flex items-center h-full">TaskFlow</span>
+            <span className="font-extrabold text-2xl tracking-tight text-[var(--text-primary)] flex items-center h-full">TaskFlow</span>
           )}
         </div>
         <button 
@@ -77,7 +71,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             {/* Row 1: Icon and Name */}
             <div className="sb-user-row">
               <Avatar name={user?.name} color={user?.avatarColor} size="md" />
-              <div className="font-extrabold text-sm text-white truncate w-full">{user?.name}</div>
+              <div className="font-extrabold text-sm text-[var(--text-primary)] truncate w-full">{user?.name}</div>
             </div>
             {/* Row 2: Role */}
             <div className="flex items-center mb-4 px-1">
