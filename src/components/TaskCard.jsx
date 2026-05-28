@@ -83,6 +83,15 @@ export default function TaskCard({ task, onEdit, onDelete }) {
           <span className={`badge badge-${task.priority || 'medium'}`}>
             {task.priority || 'Medium'}
           </span>
+          {task.assigneeName && (
+            <div 
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm"
+              style={{ backgroundColor: task.assigneeAvatarColor || '#ccc' }}
+              title={`Assigned to ${task.assigneeName}`}
+            >
+              {task.assigneeName.charAt(0).toUpperCase()}
+            </div>
+          )}
         </div>
         
         {task.dueDate && (

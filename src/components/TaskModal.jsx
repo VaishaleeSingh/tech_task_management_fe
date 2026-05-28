@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useTaskStore from '../store/useTaskStore';
+import api from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function TaskModal({ isOpen, onClose, task, initialStatus = 'todo' }) {
@@ -10,19 +12,25 @@ export default function TaskModal({ isOpen, onClose, task, initialStatus = 'todo
     description: '',
     status: initialStatus,
     priority: 'medium',
+    assignee_id: '',
     due_date: ''
   });
+  
+  const [users, setUsers] = useState([]);
+  const { user: currentUser } = useAuth();
   
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
+      api.get('/api/auth/users').then(res => setUsers(res.data)).catch(console.error);
       if (task) {
         setFormData({
           title: task.title || '',
           description: task.description || '',
           status: task.status || 'todo',
           priority: task.priority || 'medium',
+          assignee_id: task.assigneeId || currentUser?.id || '',
           due_date: task.dueDate ? task.dueDate.split('T')[0] : ''
         });
       } else {
@@ -31,11 +39,12 @@ export default function TaskModal({ isOpen, onClose, task, initialStatus = 'todo
           description: '',
           status: initialStatus,
           priority: 'medium',
+          assignee_id: currentUser?.id || '',
           due_date: ''
         });
       }
     }
-  }, [isOpen, task, initialStatus]);
+  }, [isOpen, task, initialStatus, currentUser]);
 
   if (!isOpen) return null;
 
@@ -122,13 +131,28 @@ export default function TaskModal({ isOpen, onClose, task, initialStatus = 'todo
               </div>
             </div>
             
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-semibold text-[var(--text-secondary)]">Due Date (Optional)</label>
-              <input 
-                type="date" 
-                value={formData.due_date} 
-                onChange={e => setFormData({...formData, due_date: e.target.value})} 
-              />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col gap-1 flex-1">
+                <label className="text-sm font-semibold text-[var(--text-secondary)]">Assign To</label>
+                <select 
+                  value={formData.assignee_id} 
+                  onChange={e => setFormData({...formData, assignee_id: e.target.value})}
+                >
+                  <option value="">Unassigned</option>
+                  {users.map(u => (
+                    <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1 flex-1">
+                <label className="text-sm font-semibold text-[var(--text-secondary)]">Due Date (Optional)</label>
+                <input 
+                  type="date" 
+                  value={formData.due_date} 
+                  onChange={e => setFormData({...formData, due_date: e.target.value})} 
+                />
+              </div>
             </div>
           </div>
           
