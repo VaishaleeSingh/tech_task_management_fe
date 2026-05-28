@@ -64,6 +64,18 @@ export default function Signup() {
               required minLength={6}
             />
           </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest px-1">Account Role</label>
+            <select 
+              value={form.role}
+              onChange={e => setForm(p => ({ ...p, role: e.target.value }))}
+              className="bg-[var(--bg-card)] border border-[var(--border)] rounded-md px-3 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+            >
+              <option value="member">Team Member</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
           
           <button 
             type="submit" 
