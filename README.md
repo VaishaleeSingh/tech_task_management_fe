@@ -6,6 +6,11 @@ TaskFlow is a high-fidelity, full-stack task management application designed for
 - **Frontend (Vercel):** [https://tech-task-management-fe.vercel.app/](https://tech-task-management-fe.vercel.app/)
 - **Backend (Render):** [https://tech-task-management-be.onrender.com](https://tech-task-management-be.onrender.com)
 
+### 🔐 Demo Credentials
+To explore the application with pre-populated dummy data, you can use the following accounts:
+- **Admin Account:** `admin@demo.com` / `demo1234`
+- **Member Account:** `member@demo.com` / `demo1234`
+
 ---
 
 ## ✨ Key Features
